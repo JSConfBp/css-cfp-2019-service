@@ -1,0 +1,46 @@
+{
+  "name": "cfp-vote-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "npx nodemon index.js",
+    "spec": "npx raml2html spec/API.raml > spec/API.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/necccc/piosk.git"
+  },
+  "keywords": [],
+  "author": "nec@shell8.net",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/necccc/piosk/issues"
+  },
+  "engines": {
+    "node": "10.4.0"
+  },
+  "homepage": "https://github.com/necccc/piosk#readme",
+  "dependencies": {
+    "ajv": "^6.9.2",
+    "boom": "^7.3.0",
+    "dotenv": "^6.2.0",
+    "hapi": "^17.8.4",
+    "jws": "^3.2.1",
+    "moment": "^2.24.0",
+    "redis": "^2.8.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.3",
+    "raml2html": "7.1.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "spec/*"
+    ],
+    "delay": "1500"
+  }
+}
