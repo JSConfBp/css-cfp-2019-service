@@ -15,22 +15,36 @@ const store = createStore()
 
 const get = promisify(store.get).bind(store);
 const set = promisify(store.set).bind(store);
+const hset = promisify(store.hset).bind(store);
+const hget = promisify(store.hget).bind(store);
 const del = promisify(store.del).bind(store);
 const rpush = promisify(store.rpush).bind(store);
 const lrange = promisify(store.lrange).bind(store);
+const llen = promisify(store.llen).bind(store);
+
+const zcard = promisify(store.zcard).bind(store);
+const zadd = promisify(store.zadd).bind(store);
+const zrange = promisify(store.zrange).bind(store);
+
 const lrem = promisify(store.lrem).bind(store);
 
-exports.set = (key, value) => set(key, JSON.stringify(value))
-exports.get = (key) => get(key).then(value => JSON.parse(value))
-exports.del = (key) => {
+exports.hset = async (hash, key, value) => hset(hash, key, JSON.stringify(value))
+exports.hget = async (hash, key) => hget(hash, key)
+
+exports.rpush = async (list, value) => rpush(list, value)
+exports.lrange = async (list, from, to) => lrange(list, from, to)
+exports.llen = async (list) => llen(list)
+
+exports.zcard = async (set) => zcard(set)
+exports.zadd = async (set, score, item) => zadd(set, score, item)
+exports.zrange = async (set, from, to) => zrange(set, from, to)
+
+exports.set = async (key, value) => set(key, JSON.stringify(value))
+exports.get = async (key) => get(key).then(value => JSON.parse(value))
+exports.del = async (key) => {
 	if (key instanceof Array) {
 		return del(...key).then(value => value)
 	} else {
 		return del(key).then(value => value)
 	}
 }
-
-exports.setKioskIdForClient = (clientId, kioskId) => rpush(`KC__${clientId}`, kioskId)
-exports.getKioskIdsOfClient = (clientId) => lrange(`KC__${clientId}`, 0, -1)
-
-exports.removeKioskIdsOfClient = (clientId, kioskId) => lrem(`KC__${clientId}`, 0, kioskId)

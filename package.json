@@ -26,11 +26,13 @@
   "dependencies": {
     "ajv": "^6.9.2",
     "boom": "^7.3.0",
+    "csv": "^5.1.1",
     "dotenv": "^6.2.0",
     "hapi": "^17.8.4",
     "jws": "^3.2.1",
     "moment": "^2.24.0",
     "redis": "^2.8.0",
+    "shortid": "^2.2.14",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

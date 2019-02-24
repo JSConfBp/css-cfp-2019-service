@@ -1,6 +1,6 @@
 const validator = require('../../../validator')
 const { create } = require('../../../services/cfp')
-const ClientCreatedResponse = require('../../responses/CfpCreated')
+const CfpCreatedResponse = require('../../responses/CfpCreated')
 
 module.exports = {
 	method: 'POST',
@@ -19,6 +19,6 @@ module.exports = {
 	},
 	handler: async (request, h) => {
 		const data = await create(request)
-		return ClientCreatedResponse(data)
+		return CfpCreatedResponse(data)
 	}
 }

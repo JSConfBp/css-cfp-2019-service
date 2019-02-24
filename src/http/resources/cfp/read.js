@@ -1,26 +1,15 @@
-const Boom = require('boom')
-const { read } = require('../../../services/client')
-
-const ClientResponse = require('../../responses/Client')
+const validator = require('../../../validator')
+const { read } = require('../../../services/cfp')
+const CfpReadResponse = require('../../responses/CfpRead')
 
 module.exports = {
 	method: 'GET',
-	path: '/client/{id}',
+	path: '/cfp',
 	options: {
 		auth: 'jwt',
-		/*validate: {
-			payload: validator([
-				validator.json('request/CreateClient')
-			])
-		}
-		*/
 	},
 	handler: async (request, h) => {
 		const data = await read(request)
-
-		if (!data) {
-			throw Boom.notFound()
-		}
-		return ClientResponse(data)
+		return CfpReadResponse(data)
 	}
 }
