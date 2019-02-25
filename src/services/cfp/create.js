@@ -2,26 +2,6 @@ const csv = require('csv')
 const store = require('../../store')
 const shortid = require('shortid');
 
-/*
-Data
-* year
-* Talk objects as hashes under ID
-* talk index as list
-* User votes sorted sets (votes-user voteInt talkID)
-
-
-
-async function (data) {
-
-	return new Promise((resolve, reject) => {
-		csv.parse(data, {columns: true}, (err, csvData) => {
-
-			if (err) return reject(err)
-
-
-*/
-
-
 const parseCsv = async function (data) {
 	return new Promise((resolve, reject) => {
 		csv.parse(data, {columns: true}, (err, csvData) => {

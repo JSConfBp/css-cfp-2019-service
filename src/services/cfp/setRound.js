@@ -1,7 +1,7 @@
 const store = require('../../store')
 
 module.exports = async function ({ payload }) {
-	console.log('REMOVE CFPS');
+	console.log(payload);
 
 	return { success: false }
 }
