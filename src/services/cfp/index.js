@@ -1,6 +1,6 @@
 module.exports = {
 	create: require('./create'),
 	read: require('./read'),
-	setRound: require('./setRound'),
+	update: require('./update'),
 	remove: require('./remove'),
 }
