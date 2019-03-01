@@ -1,13 +1,10 @@
 const store = require('../../store')
-const jwt = require('../../auth/token')
+const getLoginName = require('../../auth/loginName')
 
 module.exports = async function (request) {
 
 	const { payload: vote } = request
-	const { token } = request.auth.credentials
-	const payload = await jwt.decode(token)
-	const { login } = payload
-
+	const login = await getLoginName(request)
 	const key = `votes-${login}`
 
 	await store.rpush(key, JSON.stringify(vote))

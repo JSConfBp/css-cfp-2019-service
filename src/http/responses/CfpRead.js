@@ -1,3 +1,3 @@
-module.exports = function ({ year, count }) {
-  return { year, count }
+module.exports = function ({ year, count, stage }) {
+  return { year, count, stage }
 }

@@ -1,7 +1,8 @@
 const store = require('../../store')
 const jwt = require('../../auth/token')
 
-const FIELDS = JSON.parse(process.env.CFP_VOTE_FIELDS || "[]")
+const cfpConfig = require('../../../cfp.config')
+const FIELDS = cfpConfig.cfp_fields || []
 
 module.exports = async function (request) {
 

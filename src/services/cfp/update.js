@@ -1,9 +1,7 @@
 const store = require('../../store')
 
-module.exports = async function ({ payload }) {
-	console.log(payload);
-
-	const { payload: { year, stage} } = request
+module.exports = async function (request) {
+	const { payload: { year, stage } } = request
 
 	if (year) {
 		await store.set('year', year)
@@ -12,5 +10,5 @@ module.exports = async function ({ payload }) {
 		await store.set('stage', stage)
 	}
 
-	return { success: true }
+	return { stage, year }
 }

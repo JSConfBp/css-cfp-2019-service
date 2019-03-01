@@ -1,9 +1,9 @@
 const validator = require('../../../validator')
-const { update } = require('../../../services/cfp')
+const { remove } = require('../../../services/cfp')
 const CfpUpdateResponse = require('../../responses/CfpUpdate')
 
 module.exports = {
-	method: 'PUT',
+	method: 'DELETE',
 	path: '/cfp',
 	options: {
 		auth: 'admin',
@@ -12,7 +12,7 @@ module.exports = {
 		},
 	},
 	handler: async (request, h) => {
-		const data = await update(request)
+		const data = await remove(request)
 		return CfpUpdateResponse(data)
 	}
 }
