@@ -10,9 +10,18 @@ module.exports = async function (request) {
 	const payload = await jwt.decode(token)
 	const { login } = payload
 
+	const stage = await store.get('stage')
+
 	const key = `votes-${login}`
 	const nextIndex = await store.llen(key)
-	const total = await store.llen('talks')
+
+	let total
+
+	if (stage === 'stage_1') {
+		total = await store.llen('talks_stage_1')
+	} else if (stage === 'stage_2') {
+		total = await store.llen('talks_stage_2')
+	}
 
 	const data = {
 		fields: {},
@@ -24,7 +33,14 @@ module.exports = async function (request) {
 		return data
 	}
 
-	const nextId = await store.lindex('talks', nextIndex)
+	let nextId
+
+	if (stage === 'stage_1') {
+		nextId = await store.lindex('talks_stage_1', nextIndex)
+	} else if (stage === 'stage_2') {
+		nextId = await store.lindex('talks_stage_2', nextIndex)
+	}
+
 	const nextTalk = await store.hgetall(nextId)
 
 	data.id = nextId

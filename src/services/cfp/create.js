@@ -23,7 +23,7 @@ module.exports = async function ({ headers, payload }) {
 		Object.entries(cfps[i]).forEach( async ([key, value]) => {
 			await store.hset(id, key, value)
 		})
-		await store.rpush('talks', id)
+		await store.rpush('talks_stage_1', id)
 	}
 
 	await store.set('year', year)

@@ -37,7 +37,6 @@ const authenticate = async function (request, h) {
 
 		const isAdmin = ADMINS.includes(login)
 
-console.log('authorization isAdmin', payload, isAdmin);
 
 
 		if (!isAdmin) return h.unauthenticated(unauthorized(err))

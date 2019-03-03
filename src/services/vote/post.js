@@ -5,7 +5,9 @@ module.exports = async function (request) {
 
 	const { payload: vote } = request
 	const login = await getLoginName(request)
-	const key = `votes-${login}`
+	const stage = await store.get('stage')
+
+	const key = `votes-${stage}-${login}`
 
 	await store.rpush(key, JSON.stringify(vote))
 
