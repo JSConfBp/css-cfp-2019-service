@@ -5,17 +5,15 @@ module.exports = {
 		"Presentation summary to be displayed on the website",
 		"Presentation summary"
 	],
-	voting_stages: [
-		{
-			name: 'stage_1',
+	voting_stages: {
+		'stage_1': {
 			label: 'First Voting Round'
 		},
-		{
-			name: 'stage_2',
+		'stage_2': {
 			label: 'Shortlisting Round',
-			include_votes_top: 60
+			include_votes_top: 6
 		}
-	],
+	},
 	voting_ui: {
 		stage_1: [
 			{ label: '1', value: 1 },

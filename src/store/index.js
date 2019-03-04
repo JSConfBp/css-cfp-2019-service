@@ -52,3 +52,6 @@ exports.del = async (key) => {
 		return del(key).then(value => value)
 	}
 }
+
+
+exports.keys = require('./keys') 

@@ -26,20 +26,22 @@ const updateStage = async (stage) => {
 	if (stage === 'stage_1') {}
 
 	if (stage === 'stage_2') {
-		return  updateToStage2()
+		return  updateToStage2(stage)
 	}
 
 }
 
 
-const updateToStage2 = async () => {
+const updateToStage2 = async (stage) => {
 
 	// STAGE 2
 
-	const talks = await store.lrange('talks', 0, -1)
+	const { getUserStagedVotesKey, getStagedTalksKey } = store.keys
+
+	const talks = await store.lrange(getStagedTalksKey('stage_1'), 0, -1)
 
 	const voteData = await Promise.all(USERS.map(async (user) => {
-		const key = `votes-stage_1-${user}`
+		const key = getUserStagedVotesKey(user, stage)
 		const votes = await store.lrange(key, 0, -1)
 		const voteValuePairs = votes.reduce((obj, vote) => {
 			if (vote) {
@@ -69,13 +71,24 @@ const updateToStage2 = async () => {
 		}
 	})
 
+
+	const topVotes = cfpConfig.voting_stages['stage_2'].include_votes_top
+
+console.log(votedTalks);
+
 	const shortListIds = votedTalks
-		.filter(talk => talk.votes >= cfpConfig.include_votes_top)
+		.filter(talk => talk.votes >= topVotes)
 		.map(talk => talk.id)
+
+console.log(shortListIds);
+
+	if (shortListIds.length < 1) {
+		return
+	}
 
 // todo shuffle ?
 
-	await store.rpush('talks_stage_2', ...shortListIds)
+	await store.rpush(getStagedTalksKey(stage), ...shortListIds)
 }
 
 

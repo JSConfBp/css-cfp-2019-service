@@ -4,6 +4,8 @@ const jwt = require('../../auth/token')
 const cfpConfig = require('../../../cfp.config')
 const FIELDS = cfpConfig.cfp_fields || []
 
+const { getUserStagedVotesKey, getStagedTalksKey } = store.keys
+
 module.exports = async function (request) {
 
 	const { token } = request.auth.credentials
@@ -12,35 +14,27 @@ module.exports = async function (request) {
 
 	const stage = await store.get('stage')
 
-	const key = `votes-${login}`
+	const key = getUserStagedVotesKey(login, stage)
 	const nextIndex = await store.llen(key)
 
-	let total
+	const stagedTalksKey = getStagedTalksKey(stage)
 
-	if (stage === 'stage_1') {
-		total = await store.llen('talks_stage_1')
-	} else if (stage === 'stage_2') {
-		total = await store.llen('talks_stage_2')
-	}
+	const total = await store.llen(stagedTalksKey)
 
 	const data = {
 		fields: {},
 		completed: false
 	}
 
-	if (nextIndex > total) {
+console.log(nextIndex , total);
+
+
+	if (nextIndex >= total) {
 		data.completed = true
 		return data
 	}
 
-	let nextId
-
-	if (stage === 'stage_1') {
-		nextId = await store.lindex('talks_stage_1', nextIndex)
-	} else if (stage === 'stage_2') {
-		nextId = await store.lindex('talks_stage_2', nextIndex)
-	}
-
+	const nextId = await store.lindex(stagedTalksKey, nextIndex)
 	const nextTalk = await store.hgetall(nextId)
 
 	data.id = nextId
