@@ -28,7 +28,7 @@ const updateStage = async (from, to) => {
 	console.log(`updating stage from ${from} to ${to}`);
 
 	if (to === 'stage_1') {
-		return store.llen(getStagedTalksKey(to))
+		return updateToStage1(from, to)
 	}
 
 	if (to === 'stage_2') {
@@ -83,20 +83,30 @@ const updateToStage2 = async (previousStage, newStage) => {
 		return
 	}
 
-// todo shuffle ?
+	// shuffle array
+	const shuffledShortListIds = shortListIds.sort(() => (0.5 - Math.random()));
 
-	await store.rpush(getStagedTalksKey(newStage), ...shortListIds)
+	await store.rpush(getStagedTalksKey(newStage), ...shuffledShortListIds)
 
-	return shortListIds.length
+	return shuffledShortListIds.length
 
 }
 
 
-const updateToStage1 = async () => {
+const updateToStage1 = async (previousStage, newStage) => {
 
 	// STAGE 1
 
-	await store.del('talks_stage_2')
+	await store.del(getStagedTalksKey(previousStage))
+
+	const USERS = JSON.parse(process.env.CFP_VOTE_USERS || "[]")
+
 	// remove stage 2 votes as well
+	await Promise.all(USERS.map(async (user) => {
+		const key = getUserStagedVotesKey(user, previousStage)
+		await store.del(key)
+	}))
+
+	return await store.llen(getStagedTalksKey(newStage))
 
 }
