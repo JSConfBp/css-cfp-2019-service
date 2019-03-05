@@ -1,4 +1,5 @@
 const store = require('../../store')
+const { getUserStagedVotesKey, getStagedTalksKey } = store.keys
 
 const USERS = JSON.parse(process.env.CFP_VOTE_USERS || "[]")
 const cfpConfig = require('../../../cfp.config')
@@ -8,40 +9,41 @@ module.exports = async function (request) {
 
 	if (year) {
 		await store.set('year', year)
+		return { year }
 	}
 
 	if (stage) {
-		await updateStage(stage)
+		const year = await store.get('year')
+		const previousStage = await store.get('stage')
+		const count = await updateStage(previousStage, stage)
 		await store.set('stage', stage)
-	}
-
-	return { stage, year }
-}
-
-
-
-const updateStage = async (stage) => {
-	console.log('updating stage to', stage);
-
-	if (stage === 'stage_1') {}
-
-	if (stage === 'stage_2') {
-		return  updateToStage2(stage)
+		return { count, stage, year }
 	}
 
 }
 
 
-const updateToStage2 = async (stage) => {
 
-	// STAGE 2
+const updateStage = async (from, to) => {
+	console.log(`updating stage from ${from} to ${to}`);
 
-	const { getUserStagedVotesKey, getStagedTalksKey } = store.keys
+	if (to === 'stage_1') {
+		return store.llen(getStagedTalksKey(to))
+	}
 
-	const talks = await store.lrange(getStagedTalksKey('stage_1'), 0, -1)
+	if (to === 'stage_2') {
+		return updateToStage2(from, to)
+	}
+
+}
+
+
+const updateToStage2 = async (previousStage, newStage) => {
+
+	const talks = await store.lrange(getStagedTalksKey(previousStage), 0, -1)
 
 	const voteData = await Promise.all(USERS.map(async (user) => {
-		const key = getUserStagedVotesKey(user, stage)
+		const key = getUserStagedVotesKey(user, previousStage)
 		const votes = await store.lrange(key, 0, -1)
 		const voteValuePairs = votes.reduce((obj, vote) => {
 			if (vote) {
@@ -71,16 +73,11 @@ const updateToStage2 = async (stage) => {
 		}
 	})
 
-
-	const topVotes = cfpConfig.voting_stages['stage_2'].include_votes_top
-
-console.log(votedTalks);
+	const topVotes = cfpConfig.voting_stages[newStage].include_votes_top
 
 	const shortListIds = votedTalks
 		.filter(talk => talk.votes >= topVotes)
-		.map(talk => talk.id)
-
-console.log(shortListIds);
+		.map(obj => obj.talk)
 
 	if (shortListIds.length < 1) {
 		return
@@ -88,7 +85,10 @@ console.log(shortListIds);
 
 // todo shuffle ?
 
-	await store.rpush(getStagedTalksKey(stage), ...shortListIds)
+	await store.rpush(getStagedTalksKey(newStage), ...shortListIds)
+
+	return shortListIds.length
+
 }
 
 
