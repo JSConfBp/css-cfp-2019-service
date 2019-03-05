@@ -3,7 +3,7 @@
 
 
 exports.getStagedTalksKey = (stage) => {
-	return `talks_${stage}`
+	return `talks-${stage}`
 }
 
 exports.getUserStagedVotesKey = (user, stage) => {

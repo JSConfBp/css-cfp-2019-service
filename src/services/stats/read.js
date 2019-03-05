@@ -4,7 +4,6 @@ const USERS = JSON.parse(process.env.CFP_VOTE_USERS || "[]")
 const { getUserStagedVotesKey, getStagedTalksKey } = store.keys
 
 module.exports = async function () {
-
 	const stage = await store.get('stage')
 	const total = await store.llen(getStagedTalksKey(stage))
 

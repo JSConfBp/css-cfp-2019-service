@@ -1,7 +1,7 @@
 
 const { promisify } = require('util')
 const redis = require("redis")
-
+const migrate = require('./migrate')
 
 const createStore = () => {
 	if (process.env.NODE_ENV === 'production') {
@@ -12,6 +12,8 @@ const createStore = () => {
 }
 
 const store = createStore()
+
+migrate(store)
 
 const get = promisify(store.get).bind(store);
 const set = promisify(store.set).bind(store);

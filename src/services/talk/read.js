@@ -26,9 +26,6 @@ module.exports = async function (request) {
 		completed: false
 	}
 
-console.log(nextIndex , total);
-
-
 	if (nextIndex >= total) {
 		data.completed = true
 		return data
