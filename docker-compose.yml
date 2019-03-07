@@ -9,7 +9,7 @@ services:
     ports:
         - "4000:4000"
     working_dir: /usr/src/app
-    command: ["npm", "run", "dev"]
+    command: ["npx", "nodemon", "index.js"]
     environment:
       - PORT=4000
       - REDIS_URL=redis
