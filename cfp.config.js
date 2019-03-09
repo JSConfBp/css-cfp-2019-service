@@ -11,7 +11,7 @@ module.exports = {
 		},
 		'stage_2': {
 			label: 'Shortlisting Round',
-			include_votes_top: 60
+			include_votes_top: 4
 		}
 	},
 	voting_ui: {

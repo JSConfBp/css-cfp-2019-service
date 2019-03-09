@@ -73,11 +73,14 @@ const updateToStage2 = async (previousStage, newStage) => {
 		}
 	})
 
+
 	const topVotes = cfpConfig.voting_stages[newStage].include_votes_top
 
 	const shortListIds = votedTalks
 		.filter(talk => talk.votes >= topVotes)
 		.map(obj => obj.talk)
+
+	//console.log(votedTalks);
 
 	if (shortListIds.length < 1) {
 		return
@@ -85,6 +88,10 @@ const updateToStage2 = async (previousStage, newStage) => {
 
 	// shuffle array
 	const shuffledShortListIds = shortListIds.sort(() => (0.5 - Math.random()));
+
+	console.log(getStagedTalksKey(newStage));
+	console.log(shuffledShortListIds);
+
 
 	await store.rpush(getStagedTalksKey(newStage), ...shuffledShortListIds)
 
