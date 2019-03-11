@@ -16,9 +16,9 @@ Fork this repo, then go to Heroku and create a new App there. Connect it to GitH
 
 If your App is connected to GitHub, go to the Resources tab, and add a free Heroku Redis instance.
 
-![Search for "redis"](https://raw.githubusercontent.com/JSConfBp/cfp-vote-ui/master/docs/heroku-redis-addon.png)
+![Search for "redis"](https://raw.githubusercontent.com/JSConfBp/cfp-vote-service/master/docs/heroku-redis-addon.png)
 
-![Provision a free Heroku Redis](https://raw.githubusercontent.com/JSConfBp/cfp-vote-ui/master/docs/heroku-redis-provision.png)
+![Provision a free Heroku Redis](https://raw.githubusercontent.com/JSConfBp/cfp-vote-service/master/docs/heroku-redis-provision.png)
 
 
 After it looks like it has been provisioned, go to the Settings tab, and edit the config vars:
