@@ -2,6 +2,7 @@ const store = require('../../store')
 const jwt = require('../../auth/token')
 
 const cfpConfig = require('../../../cfp.config')
+
 const FIELDS = cfpConfig.cfp_fields || []
 
 const { getUserStagedVotesKey, getStagedTalksKey } = store.keys
