@@ -2,8 +2,8 @@ module.exports = {
 	title: "CSSConf Bp CFP Vote 2019",
 	cfp_fields: [
 		"Presentation title",
-		"Presentation summary to be displayed on the website",
-		"Presentation summary"
+		"Presentation summary (abstract) to be displayed on the website",
+		"More details on your Presentation"
 	],
 	voting_stages: {
 		'stage_1': {
