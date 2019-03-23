@@ -8,7 +8,13 @@ const server = Hapi.server({
     port: process.env.PORT || 4000,
     routes: {
         cors: {
-			additionalHeaders: ['x-cfp-year', 'x-cfp-stage']
+            // TODO put these in with their respective routes
+			additionalHeaders: [
+                'x-cfp-year',
+                'x-cfp-stage',
+                'x-spreadsheet-id',
+                'x-sheet-name'
+            ]
 		}
     }
 });
