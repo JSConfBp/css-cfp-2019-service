@@ -8,7 +8,8 @@ module.exports = {
 	options: {
 		auth: 'admin',
 		payload: {
-			allow: 'text/csv'
+			allow: 'text/csv',
+			maxBytes: 3145728 // 3MB
 		},
 		/*validate: {
 			payload: validator([
