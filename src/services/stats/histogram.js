@@ -1,17 +1,30 @@
 const store = require('../../store')
 const { voting_ui } = require('../../../cfp.config')
 
+const getStagedVotedTalks = require('../../lib/getStagedVotedTalks')
+
 const USERS = JSON.parse(process.env.CFP_VOTE_USERS || "[]")
 
 const { getUserStagedVotesKey } = store.keys
 
 module.exports = async function () {
 	const stages = Object.keys(voting_ui).map(stage => getVoteHistogram(stage, voting_ui[stage]))
-	const data = {}
+
+	const data = {
+		votes: {},
+		talks: {}
+	}
 
 	for await (stage of stages) {
-		data[stage.stageId] = stage.buckets
+		data.votes[stage.stageId] = stage.buckets
+
+		const stagedVotedTalks = await getStagedVotedTalks(stage.stageId)
+
+		data.talks[stage.stageId] = stagedVotedTalks
 	}
+
+	console.log(data);
+
 
 	return data
 }
