@@ -23,9 +23,6 @@ module.exports = async function () {
 		data.talks[stage.stageId] = stagedVotedTalks
 	}
 
-	console.log(data);
-
-
 	return data
 }
 
