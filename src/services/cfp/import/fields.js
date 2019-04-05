@@ -41,9 +41,6 @@ module.exports = async function ({ headers, payload }) {
 		})
 		.map(field => (`${sheetTitle}!${field}`))
 
-
-	console.log(ranges);
-
 	const columnData = await getColumnData(ranges, spreadsheetId, auth)
 
 
